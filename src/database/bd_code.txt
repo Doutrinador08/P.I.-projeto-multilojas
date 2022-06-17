@@ -1,0 +1,61 @@
+CREATE TABLE compras (
+  id_compra INTEGER PRIMARY KEY AUTOINCREMENT,
+  descricao VARCHAR(100) NULL,
+  valor_total DECIMAL(7,2) NOT NULL,
+  forma_pagamento VARCHAR(14) NOT NULL,
+  entrega VARCHAR(3) NOT NULL,
+  status VARCHAR(14) NOT NULL,
+  id_cliente INTEGER UNIQUE,
+  id_loja INTEGER UNIQUE,
+  data TIMESTAMP NOT NULL UNIQUE,
+  FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+  FOREIGN KEY (id_loja) REFERENCES lojas(id_loja)
+);
+
+CREATE TABLE produto (
+  id_produto INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome VARCHAR(50)  NOT NULL,
+  descricao VARCHAR(100) NULL,
+  categoria VARCHAR(14) NOT NULL,
+  preço NUMERIC(6,2) NOT NULL,
+  forma_entrega VARCHAR(14) NOT NULL,
+  imagem VARCHAR(200) NULL,
+  id_loja INTEGER,
+  FOREIGN KEY (id_loja) REFERENCES lojas(id_loja)
+);
+
+CREATE TABLE itens_produto (
+  id_compra INTEGER,
+  id_produto INTEGER,
+  FOREIGN KEY (id_compra) REFERENCES compra(id_compra),
+  FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
+);
+
+CREATE TABLE empresarios (
+  id_empresario INTEGER PRIMARY KEY AUTOINCREMENT,
+  email VARCHAR(60) NOT NULL,
+  nome VARCHAR(50) NOT NULL,
+  senha VARCHAR(50) NOT NULL,
+  telefone VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE lojas (
+  id_loja INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome VARCHAR(40) NOT NULL,
+  descricao VARCHAR(200),
+  telefone VARCHAR(20) NOT NULL,
+  termos VARCHAR(300),
+  cnpj VARCHAR(18) NOT NULL,
+  id_empresario INTEGER UNIQUE,
+	FOREIGN KEY (id_empresario) REFERENCES empresarios(id_empresario)
+);
+
+CREATE TABLE cliente (
+  id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome VARCHAR(50) NOT NULL,
+  email VARCHAR(60) NOT NULL,
+  endereco VARCHAR(80) NOT NULL,
+  telefone VARCHAR(20) NOT NULL,
+  senha VARCHAR(20) NOT NULL,
+  cpf VARCHAR(20) NOT NULL
+);
